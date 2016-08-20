@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+게시물 목록
+<table style="width: 100%;">
+    <thead>
+        <th>id</th>
+        <th>제목</th>
+        <th>내용</th>
+        <th>생성시간</th>
+    </thead>
+    <tbody>
+        {% for board in boards %}
+            <tr>
+                <td>{{board.id}}</td>
+                <td>{{board.title}}</td>
+                <td>{{board.content}}</td>
+                <td>{{board.created_at}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
