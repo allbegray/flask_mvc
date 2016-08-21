@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, render_template, url_for, request, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
 
@@ -29,20 +30,39 @@ def board_list():
     return render_template('board/board_list.html', boards=boards)
 
 
-@app.route("/board/update/<id>", methods=['GET'])
+@app.route("/board/add", methods=['GET'])
+def board_add_form():
+    form = BoardInsertForm(csrf_enabled=False)
+    return render_template('board/board_form.html', form=form)
+
+
+@app.route("/board/update/<int:id>", methods=['GET'])
 def board_update_form(id):
-    return render_template('board/board_form.html')
+    board = Board.query.get(id)
+    form = BoardInsertForm(csrf_enabled=False, obj=board)
+    return render_template('board/board_form.html', form=form)
 
 
-@app.route("/board", methods=['GET', 'POST'])
+@app.route("/board", methods=['POST'])
 def board_save():
     form = BoardInsertForm(csrf_enabled=False)
-    if form.validate_on_submit():
-        b = Board(title=form.title.data, content=form.content.data)
-        db_session.add(b)
-        db_session.commit()
-        flash('게시물을 생성하였습니다.')
-        return redirect(url_for('board_view', id=b.id))
+    if form.validate():
+        id = form.id.data
+        if not id:
+            b = Board(title=form.title.data, content=form.content.data)
+            db_session.add(b)
+            db_session.commit()
+            id = b.id
+            flash('게시물을 생성 하였습니다.')
+        else:
+            board = Board.query.get(id)
+            board.title = form.title.data
+            board.content = form.content.data
+            board.updated_at = datetime.utcnow()
+            db_session.commit()
+            flash('게시물을 수정 하였습니다.')
+
+        return redirect(url_for('board_view', id=id))
     else:
         return render_template('board/board_form.html', form=form)
 
