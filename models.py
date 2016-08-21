@@ -11,7 +11,7 @@ class Board(Base):
     title = Column(String(length=255), nullable=False)
     content = Column(Text)
     created_at = Column(TIMESTAMP, default=datetime.utcnow())
-    updated_at = Column(TIMESTAMP)
+    updated_at = Column(TIMESTAMP, default=datetime.utcnow(), onupdate=datetime.utcnow())
 
     def __init__(self, title, content):
         self.title = title

@@ -58,7 +58,6 @@ def board_save():
             board = Board.query.get(id)
             board.title = form.title.data
             board.content = form.content.data
-            board.updated_at = datetime.utcnow()
             db_session.commit()
             flash('게시물을 수정 하였습니다.')
 
