@@ -5,6 +5,22 @@
     <title>Title</title>
 </head>
 <body>
-게시물 보기
+<div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</div>
+<h1>게시물 보기</h1>
+<div>
+    제목 : {{ board.title }}
+    <br/>
+    내용 : {{ board.content }}
+</div>
 </body>
 </html>

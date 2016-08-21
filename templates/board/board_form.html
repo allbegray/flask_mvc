@@ -5,9 +5,12 @@
     <title>Title</title>
 </head>
 <body>
-게시판 생성/수정
-<form action="">
-
+<h1>게시판 생성/수정</h1>
+<form method="post" action="{{  url_for('board_save') }}">
+    {{ form.hidden_tag() }}
+    {{ form.title.label }} {{ form.title }} {% if form.title.errors %} {{ form.title.errors }} {% endif %}
+    {{ form.content.label }} {{  form.content }} {% if form.content.errors %} {{ form.content.errors }} {% endif %}
+    {{ form.submit }}
 </form>
 </body>
 </html>
